@@ -1,6 +1,14 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=gcr.io/$PROJECT_ID/helm:${_HELM_VERSION}', '--tag=gcr.io/$PROJECT_ID/helm:latest', '--build-arg', 'HELM_VERSION=v${_HELM_VERSION}', '.']
+  args:
+    - 'build'
+    - '--tag=gcr.io/$PROJECT_ID/helm:${_HELM_VERSION}'
+    - '--tag=gcr.io/$PROJECT_ID/helm:latest'
+    - '--build-arg'
+    - 'HELM_VERSION=v${_HELM_VERSION}'
+    - '--build-arg'
+    - 'CLOUD_BUILDERS_REPO_URL=gcr.io/$PROJECT_ID'
+    - '.'
 # Sanity Check: make sure basic functionality works
 - name: 'gcr.io/$PROJECT_ID/helm:latest'
   args: ['version', '--client']
