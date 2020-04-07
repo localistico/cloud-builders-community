@@ -1,4 +1,5 @@
-FROM ubuntu:bionic
+ARG  CLOUD_BUILDERS_REPO_URL
+FROM ${CLOUD_BUILDERS_REPO_URL}/docker
 
 ARG version=1.24.0
 
@@ -7,12 +8,10 @@ RUN \
     apt -y update && \
     apt -y install --no-install-recommends \
         ca-certificates \
-        curl \
-        # Install pigz from the list of docker's recommended packages
-        # to speed up layer extraction.
-        docker.io pigz && \
+    curl && \
     curl -L "https://github.com/docker/compose/releases/download/$version/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
     chmod +x /usr/local/bin/docker-compose && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["/usr/local/bin/docker-compose"]
